@@ -5,7 +5,8 @@ public class Gun : MonoBehaviour
 {
 	public Rigidbody2D rocket;				// Prefab of the rocket.
 	public float speed = 20f;				// The speed the rocket will fire at.
-
+	public bool cooldown = false;
+	public float cd;
 
 	private PlayerControl playerCtrl;		// Reference to the PlayerControl script.
 	private Animator anim;					// Reference to the Animator component.
@@ -22,7 +23,7 @@ public class Gun : MonoBehaviour
 	void Update ()
 	{
 		// If the fire button is pressed...
-		if(Input.GetButtonDown("Fire1"))
+		if(Input.GetButtonDown("Fire1")&& !cooldown)
 		{
 			// ... set the animator Shoot trigger parameter and play the audioclip.
 			anim.SetTrigger("Shoot");
@@ -41,6 +42,12 @@ public class Gun : MonoBehaviour
 				Rigidbody2D bulletInstance = Instantiate(rocket, transform.position, Quaternion.Euler(new Vector3(0,0,180f))) as Rigidbody2D;
 				bulletInstance.velocity = new Vector2(-speed, 0);
 			}
+			cooldown = true;
+			cd = 0.5f;
+
 		}
+	
+		cd-=Time.deltaTime;
+		if(cd<=0)cooldown = false;
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections;
 public class Pauser : MonoBehaviour {
 	private bool paused = false;
 	public GameObject pauseMenu;
+	public GameObject music;
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyUp(KeyCode.P))
@@ -14,11 +15,10 @@ public class Pauser : MonoBehaviour {
 		if(paused){
 			Time.timeScale = 0;
 			pauseMenu.SetActive(true);
+			
 
 		}
-			
-			
-			
+	
 		else{
 			Time.timeScale = 1;
 			pauseMenu.SetActive(false);
@@ -30,6 +30,17 @@ public class Pauser : MonoBehaviour {
 	public void ContinueGame()
 	{
 	paused = false;
+	}
+
+	public void ToggleMusic()
+	{
+		music = GameObject.FindWithTag("music");
+		music.GetComponent<AudioSource>().mute = !music.GetComponent<AudioSource>().mute;
+	}
+
+	public void RestartLevel()
+	{
+		Application.LoadLevel(Application.loadedLevel);
 	}
 }
 

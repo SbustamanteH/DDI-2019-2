@@ -11,13 +11,14 @@ public class Enemy : MonoBehaviour
 	public GameObject hundredPointsUI;	// A prefab of 100 that appears when the enemy dies.
 	public float deathSpinMin = -100f;			// A value to give the minimum amount of Torque when dying
 	public float deathSpinMax = 100f;			// A value to give the maximum amount of Torque when dying
-
+	public float jumpForce = 1000f;	
 
 	private SpriteRenderer ren;			// Reference to the sprite renderer.
 	private Transform frontCheck;		// Reference to the position of the gameobject used for checking if something is in front.
 	private bool dead = false;			// Whether or not the enemy is dead.
 	private Score score;				// Reference to the Score script.
-
+	private float timer;
+	
 	
 	void Awake()
 	{
@@ -25,10 +26,15 @@ public class Enemy : MonoBehaviour
 		ren = transform.Find("body").GetComponent<SpriteRenderer>();
 		frontCheck = transform.Find("frontCheck").transform;
 		score = GameObject.Find("Score").GetComponent<Score>();
+		
 	}
+
+	
 
 	void FixedUpdate ()
 	{
+		timer-=Time.deltaTime;
+		
 		// Create an array of all the colliders in front of the enemy.
 		Collider2D[] frontHits = Physics2D.OverlapPointAll(frontCheck.position, 1);
 
@@ -36,11 +42,19 @@ public class Enemy : MonoBehaviour
 		foreach(Collider2D c in frontHits)
 		{
 			// If any of the colliders is an Obstacle...
-			if(c.tag == "Obstacle" || c.tag == "Border")
+			if(c.tag == "Obstacle" || c.tag == "Player")
 			{
 				// ... Flip the enemy and stop checking the other colliders.
 				Flip ();
 				break;
+			}
+			else if(c.tag == "Border")
+			{
+				if(timer<=0){
+					Jump();
+					timer = 0.3f;
+				}
+				
 			}
 		}
 
@@ -56,6 +70,11 @@ public class Enemy : MonoBehaviour
 		if(HP <= 0 && !dead)
 			// ... call the death function.
 			Death ();
+	}
+
+	void OnCollisionEnter2D (Collision2D col)
+	{
+		if(col.gameObject.tag == "Player")Flip();
 	}
 	
 	public void Hurt()
@@ -81,6 +100,7 @@ public class Enemy : MonoBehaviour
 
 		// Increase the score by 100 points
 		score.score += 100;
+		score.enemies --;
 
 		// Set dead to true.
 		dead = true;
@@ -115,5 +135,10 @@ public class Enemy : MonoBehaviour
 		Vector3 enemyScale = transform.localScale;
 		enemyScale.x *= -1;
 		transform.localScale = enemyScale;
+	}
+
+	public void Jump()
+	{
+		GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
 	}
 }

@@ -39,14 +39,15 @@ public class PickupSpawner : MonoBehaviour
 		// Create a position with the random x coordinate.
 		Vector3 dropPos = new Vector3(dropPosX, 15f, 1f);
 
+		if(playerHealth.health <= lowHealthThreshold)
+			// ... instantiate a health pickup at the drop position.
+			Instantiate(pickups[1], dropPos, Quaternion.identity);
 		// If the player's health is above the high threshold...
-		if(playerHealth.health >= highHealthThreshold)
+		else if(playerHealth.health >= highHealthThreshold)
 			// ... instantiate a bomb pickup at the drop position.
 			Instantiate(pickups[0], dropPos, Quaternion.identity);
 		// Otherwise if the player's health is below the low threshold...
-		else if(playerHealth.health <= lowHealthThreshold)
-			// ... instantiate a health pickup at the drop position.
-			Instantiate(pickups[1], dropPos, Quaternion.identity);
+		
 		// Otherwise...
 		else
 		{

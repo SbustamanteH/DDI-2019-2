@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
 	private Vector3 healthScale;				// The local scale of the health bar initially (with full health).
 	private PlayerControl playerControl;		// Reference to the PlayerControl script.
 	private Animator anim;						// Reference to the Animator on the player
-
+	private Enemy enemy;
 
 	void Awake ()
 	{
@@ -69,7 +69,11 @@ public class PlayerHealth : MonoBehaviour
 					// ... Trigger the 'Die' animation state
 					anim.SetTrigger("Die");
 				}
+				
 			}
+
+			
+				
 		}
 	}
 
