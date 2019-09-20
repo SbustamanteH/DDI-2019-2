@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class InventoryUI : MonoBehaviour 
 {
 	public GameObject inventoryPanel;
 	private Inventory inventory;
+	public FirstPersonController controller;
+	public Pauser pauser;
+
+	private bool active = false;
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -32,11 +37,8 @@ public class InventoryUI : MonoBehaviour
 		{
 			Debug.Log("UI Off");
 			inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+			pauser.inventoryOpen = inventoryPanel.activeSelf;
 			UpdateUI();
-			Cursor.visible = inventoryPanel.activeSelf;
-			Cursor.lockState = inventoryPanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
-			
-			
 		}
 	}
 

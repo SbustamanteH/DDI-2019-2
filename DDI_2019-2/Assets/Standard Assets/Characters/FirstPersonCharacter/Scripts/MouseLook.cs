@@ -65,22 +65,27 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
+            if(lockCursor)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
         }
 
         public void UpdateCursorLock()
         {
-            //if the user set "lockCursor" we check & properly lock the cursos
+            //if the user set "lockCursor" we check & properly lock the cursor
             if (lockCursor)
                 InternalLockUpdate();
         }
 
         private void InternalLockUpdate()
         {
-            if(Input.GetKeyUp(KeyCode.Escape)||Input.GetKeyUp(KeyCode.P))
+            if(Input.GetKeyUp(KeyCode.Escape))
             {
                 m_cursorIsLocked = false;
             }
-            else if(Input.GetMouseButtonUp(0)|| Time.timeScale == 1)
+            else if(Input.GetMouseButtonUp(0))
             {
                 m_cursorIsLocked = true;
             }

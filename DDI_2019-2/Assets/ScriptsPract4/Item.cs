@@ -6,7 +6,10 @@ public enum ItemType
 {
 	Immidiate,
 	Equipment,
-	Weapon
+	Weapon,
+	Usable,
+	Quest
+
 }
 
 [CreateAssetMenu(fileName = "Nuevo Item", menuName = "Inventario/Item")]

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CollisionDetector : MonoBehaviour
 {
+    public Movement movement;
     public Material[] materials;
     Renderer renderer;
     bool interact = false;
-    bool pressed = false;
+    
     Transform entranceTransform;
     
 
@@ -16,6 +17,7 @@ public class CollisionDetector : MonoBehaviour
    
     void Start()
     {
+        movement = this.GetComponent<Movement>();
         Debug.Log("Inicio");
         renderer = GameObject.Find("Symbol").GetComponent<Renderer>();
         renderer.sharedMaterial = materials[0];
@@ -26,7 +28,7 @@ public class CollisionDetector : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E) && interact)
         {
-            pressed = true;
+            movement.move = true;
         }
     }
 

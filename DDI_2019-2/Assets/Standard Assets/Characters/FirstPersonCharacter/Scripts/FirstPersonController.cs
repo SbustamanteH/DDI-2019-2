@@ -91,6 +91,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle + .5f;
         }
 
+        public void CursorLock(bool value)
+        {
+            m_MouseLook.SetCursorLock(value);
+        }
 
         private void FixedUpdate()
         {
