@@ -1,16 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class InventoryUI : MonoBehaviour 
 {
+	public Transform player;
+	public Transform canvas;
 	public GameObject inventoryPanel;
 	private Inventory inventory;
 	public FirstPersonController controller;
 	public Pauser pauser;
 
-	private bool active = false;
+	//VR interaction
+	public bool gazedAt;
+	public float interactionTime = 2f;
+	public float timer;
+	public Transform loadingBar;
+
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -18,6 +26,9 @@ public class InventoryUI : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+
+		loadingBar = GameObject.Find("InteractBar").GetComponent<Transform>();
+
 		inventory = FindObjectOfType<Inventory>();
 		if (inventory == null)
 		{
@@ -40,8 +51,34 @@ public class InventoryUI : MonoBehaviour
 			pauser.inventoryOpen = inventoryPanel.activeSelf;
 			UpdateUI();
 		}
+
+		//VR gaze interaction
+		
+		if (gazedAt)
+		{
+			timer += Time.deltaTime;
+			if(timer >= interactionTime){
+				VRinventory();
+			}
+			loadingBar.GetComponent<Image>().fillAmount = timer/interactionTime;
+		}
+
 	}
 
+	public void VRinventory()
+	{
+			inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+			SetGazedAt(false);
+			UpdateUI();
+	}
+
+	public void SetGazedAt(bool value)
+	{
+		gazedAt = value;
+		if(!gazedAt)
+		timer = 0f;
+		loadingBar.GetComponent<Image>().fillAmount = timer/interactionTime;
+	}
 	void UpdateUI()
 	{
 		Slot[] slots = GetComponentsInChildren<Slot>();

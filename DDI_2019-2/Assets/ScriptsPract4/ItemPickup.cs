@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemPickup : Interactable 
 {
 	public Item item;
 	private Inventory inventory;
+	
 
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before
@@ -14,14 +16,17 @@ public class ItemPickup : Interactable
 	void Start()
 	{
 		inventory = FindObjectOfType<Inventory>();
+		loadingBar = GameObject.Find("InteractBar").GetComponent<Transform>();
 		if (inventory == null)
 		{
 			Debug.LogWarning("No se encontró el Inventario");
+			
 		}
 	}
 
 	public override void Interact()
 	{
+		base.Interact();
 		//Pick up object, add to inventory
 		Debug.Log("Levantando Item " + item.name);
 		if(item.itemType == ItemType.Immidiate)
@@ -33,5 +38,16 @@ public class ItemPickup : Interactable
 			inventory.Add(item);
 		}
 		Destroy(this.gameObject);
+	}
+	void Update()
+	{
+		if (gazedAt)
+		{
+			timer += Time.deltaTime;
+			if(timer >= interactionTime){
+				Interact();
+			}
+			loadingBar.GetComponent<Image>().fillAmount = timer/interactionTime;
+		}
 	}
 }

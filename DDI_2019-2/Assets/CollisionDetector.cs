@@ -18,7 +18,7 @@ public class CollisionDetector : MonoBehaviour
     void Start()
     {
         movement = this.GetComponent<Movement>();
-        Debug.Log("Inicio");
+//        Debug.Log("Inicio");
         renderer = GameObject.Find("Symbol").GetComponent<Renderer>();
         renderer.sharedMaterial = materials[0];
         entranceTransform = GameObject.Find("Entrance").GetComponent<Transform>();

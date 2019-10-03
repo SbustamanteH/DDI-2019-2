@@ -15,6 +15,7 @@ TagManager:
   - HealthBar
   - Border
   - music
+  - Teleporter
   layers:
   - Default
   - TransparentFX
